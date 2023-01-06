@@ -1,0 +1,66 @@
+# name: Deployment pipeline
+
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     branches: [master]
+#     types: [opened, synchronize]
+
+# env:
+#   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+# jobs:
+#   simple_deployment_pipeline:
+#     runs-on: ubuntu-20.04
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: "16"
+#       - name: npm install
+#         run: npm install
+#       - name: lint
+#         run: npm run eslint
+#       - name: build
+#         run: npm run build
+#       - name: test
+#         run: npm run test
+#       - name: e2e tests
+#         uses: cypress-io/github-action@v2
+#         with:
+#           command: npm run test:e2e
+#           start: npm run start-prod
+#           wait-on: http://localhost:5000
+#       - uses: superfly/flyctl-actions/setup-flyctl@master
+#       - run: flyctl deploy --remote-only
+#         if: ${{ github.event_name == 'push' }}
+#       - name: Discord deployment success
+#         uses: rjstone/discord-webhook-notify@v1
+#         if: ${{ github.event_name == 'push' && success() }}
+#         with:
+#           severity: info
+#           text: A new version of Pokedex deployed
+#           description: to https://summer-moon-5467.fly.dev/ by ${{ github.event.head_commit.author.username }}
+#           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+#       - name: Discord deployment failure
+#         uses: rjstone/discord-webhook-notify@v1
+#         if: ${{ github.event_name == 'push' && failure() }}
+#         with:
+#           severity: error
+#           text: Build failed
+#           description: commit ${{ github.event.head_commit.url }} by ${{ github.event.head_commit.author.username }} broke the build :(
+#           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+#   tag_release:
+#     needs: [simple_deployment_pipeline]
+#     runs-on: ubuntu-20.04
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Bump version and push tag
+#         if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip') }}
+#         uses: anothrNick/github-tag-action@ce4b5ffa38e072fa7a901e417253c438fcc2ccce
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           DEFAULT_BUMP: "patch"
