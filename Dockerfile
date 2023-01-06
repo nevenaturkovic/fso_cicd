@@ -1,0 +1,48 @@
+FROM debian:bullseye as builder
+
+ARG NODE_VERSION=16.19.0
+
+RUN apt-get update; apt install -y curl
+RUN curl https://get.volta.sh | bash
+ENV VOLTA_HOME /root/.volta
+ENV PATH /root/.volta/bin:$PATH
+RUN volta install node@${NODE_VERSION}
+
+#######################################################################
+
+RUN mkdir /app
+WORKDIR /app
+
+# NPM will not install any package listed in "devDependencies" when NODE_ENV is set to "production",
+# to install all modules: "npm install --production=false".
+# Ref: https://docs.npmjs.com/cli/v9/commands/npm-install#description
+
+ENV NODE_ENV production
+
+COPY . .
+
+RUN chown -R root:root . && cd frontend && npm install --production=false && npm run build
+
+#######################################################################
+# Prod container
+
+FROM debian:bullseye
+
+RUN apt-get update; apt install -y curl
+
+LABEL fly_launch_runtime="nodejs"
+
+COPY --from=builder /root/.volta /root/.volta
+COPY --from=builder /app/backend /app
+COPY --from=builder /app/frontend/dist /app/dist
+COPY --from=builder /app/health_checks /app/health_checks
+
+WORKDIR /app
+ENV NODE_ENV production
+ENV PATH /root/.volta/bin:$PATH
+ENV PORT 5000
+
+RUN npm install --omit=dev
+
+EXPOSE 5000
+CMD [ "npm", "run", "start-prod" ]

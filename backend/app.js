@@ -24,7 +24,7 @@ mongoose
   })
 
 app.use(cors())
-app.use(express.static("build"))
+app.use(express.static("dist"))
 app.use(express.json())
 app.use(middleware.tokenExtractor)
 app.use(middleware.requestLogger)
@@ -32,6 +32,11 @@ app.use(middleware.requestLogger)
 app.use("/api/blogs", middleware.userExtractor, blogsRouter)
 app.use("/api/users", usersRouter)
 app.use("/api/login", loginRouter)
+app.get("/health", (req, res) => {
+  // throw 'error...'
+  // // eslint-disable-next-line no-unreachable
+  res.send("ok")
+})
 
 if (process.env.NODE_ENV === "test") {
   const testingRouter = require("./controllers/testing")
