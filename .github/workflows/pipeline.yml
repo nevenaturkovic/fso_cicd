@@ -34,9 +34,9 @@ jobs:
       - name: move build results (artifacts) in the backend
         run: mv frontend/dist backend/dist
       - name: e2e tests
-        working-directory: ./frontend
         uses: cypress-io/github-action@v2
         with:
+          working-directory: ./frontend
           command: npm run test:e2e
           start: cd ../backend && npm run start-prod
           wait-on: http://localhost:5000
