@@ -1,4 +1,4 @@
-var _ = require("lodash")
+var _ = require('lodash')
 
 const dummy = (blogs) => {
   return 1
@@ -19,15 +19,15 @@ const favoriteBlog = (blogs) => {
   return blogs.length === 0
     ? null
     : {
-        title: blogWithMaxLikes.title,
-        author: blogWithMaxLikes.author,
-        likes: blogWithMaxLikes.likes,
-      }
+      title: blogWithMaxLikes.title,
+      author: blogWithMaxLikes.author,
+      likes: blogWithMaxLikes.likes,
+    }
 }
 
 const mostBlogs = (blogs) => {
   if (blogs.length !== 0) {
-    const blogsByAuthor = _.countBy(blogs, "author")
+    const blogsByAuthor = _.countBy(blogs, 'author')
     const maxBlogs = Math.max(...Object.values(blogsByAuthor))
     const [authorWithMostBlogs, _maxBlogs] = Object.entries(blogsByAuthor).find(
       ([_author, blogs]) => blogs === maxBlogs
