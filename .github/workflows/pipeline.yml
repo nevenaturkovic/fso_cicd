@@ -25,17 +25,21 @@ jobs:
       - name: backend lint
         working-directory: ./backend
         run: npm run lint
-  #     - name: build
-  #       run: npm run build
       - name: backend test
         working-directory: ./backend
         run: npm run test
-  #     - name: e2e tests
-  #       uses: cypress-io/github-action@v2
-  #       with:
-  #         command: npm run test:e2e
-  #         start: npm run start-prod
-  #         wait-on: http://localhost:5000
+      - name: build frontend
+        working-directory: ./frontend
+        run: npm run build
+      - name: move build results (artifacts) in the backend
+        run: mv frontend/dist backend/dist
+      - name: e2e tests
+        working-directory: ./frontend
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run test:e2e
+          start: cd ../backend && npm run start-prod
+          wait-on: http://localhost:5000
   #     - uses: superfly/flyctl-actions/setup-flyctl@master
   #     - run: flyctl deploy --remote-only
   #       if: ${{ github.event_name == 'push' }}
