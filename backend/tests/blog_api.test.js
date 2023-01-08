@@ -5,7 +5,6 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
-const bcrypt = require('bcrypt')
 const User = require('../models/user')
 
 var token

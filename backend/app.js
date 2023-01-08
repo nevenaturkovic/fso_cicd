@@ -8,7 +8,6 @@ const usersRouter = require('./controllers/users')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const loginRouter = require('./controllers/login')
-const testingRouter = require('./controllers/testing')
 
 const mongoose = require('mongoose')
 
