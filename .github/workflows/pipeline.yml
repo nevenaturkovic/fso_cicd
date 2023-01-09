@@ -44,7 +44,7 @@ jobs:
         with:
           working-directory: ./frontend
           command: npm run test:e2e
-          start: npm --prefix ../backend run start-prod
+          start: npm --prefix ../backend run start:test
           wait-on: http://localhost:5000
         env:
           CYPRESS_FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
