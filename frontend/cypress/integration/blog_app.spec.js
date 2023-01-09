@@ -1,12 +1,14 @@
+const baseUrl = 'http://localhost:5000'
+
 describe("Blog app", function () {
   beforeEach(function () {
-    cy.request("POST", "http://localhost:3003/api/testing/reset")
+    cy.request("POST", `${baseUrl}/api/testing/reset`)
     const user = {
       name: "Cveta Cveklic",
       username: "cveklica123",
       password: "password",
     }
-    cy.request("POST", "http://localhost:3003/api/users/", user)
+    cy.request("POST", `${baseUrl}/api/users/`, user)
     cy.visit("http://localhost:3000")
   })
 
@@ -82,7 +84,7 @@ describe("Blog app", function () {
           username: "misica",
           password: "disneyland",
         }
-        cy.request("POST", "http://localhost:3003/api/users/", anotherUser)
+        cy.request("POST", `${baseUrl}/api/users/`, anotherUser)
         cy.get("#username").type("misica")
         cy.get("#password").type("disneyland")
         cy.get("#login-button").click()
