@@ -45,6 +45,11 @@ jobs:
           command: npm run test:e2e
           start: npm --prefix ../backend run start-prod
           wait-on: http://localhost:5000
+        env:
+          CYPRESS_FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          CYPRESS_TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+          CYPRESS_MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          CYPRESS_SECRET: ${{ secrets.SECRET }}
   #     - uses: superfly/flyctl-actions/setup-flyctl@master
   #     - run: flyctl deploy --remote-only
   #       if: ${{ github.event_name == 'push' }}
