@@ -30,6 +30,9 @@ jobs:
       - name: backend test
         working-directory: ./backend
         run: npm run test
+      - name: npm install for frontend
+        working-directory: ./frontend
+        run: npm install
       - name: build frontend
         working-directory: ./frontend
         run: npm run build
