@@ -54,22 +54,6 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
         if: ${{ github.event_name == 'push' }}
-  #     - name: Discord deployment success
-  #       uses: rjstone/discord-webhook-notify@v1
-  #       if: ${{ github.event_name == 'push' && success() }}
-  #       with:
-  #         severity: info
-  #         text: A new version of Pokedex deployed
-  #         description: to https://summer-moon-5467.fly.dev/ by ${{ github.event.head_commit.author.username }}
-  #         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-  #     - name: Discord deployment failure
-  #       uses: rjstone/discord-webhook-notify@v1
-  #       if: ${{ github.event_name == 'push' && failure() }}
-  #       with:
-  #         severity: error
-  #         text: Build failed
-  #         description: commit ${{ github.event.head_commit.url }} by ${{ github.event.head_commit.author.username }} broke the build :(
-  #         webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
