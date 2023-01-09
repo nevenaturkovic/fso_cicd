@@ -43,7 +43,7 @@ jobs:
         with:
           working-directory: ./frontend
           command: npm run test:e2e
-          start: cd ../backend && npm run start-prod
+          start: npm --prefix ../backend run start-prod
           wait-on: http://localhost:5000
   #     - uses: superfly/flyctl-actions/setup-flyctl@master
   #     - run: flyctl deploy --remote-only
